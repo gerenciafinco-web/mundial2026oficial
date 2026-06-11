@@ -1712,14 +1712,17 @@ async function loadStateFromFirestore() {
 
   try {
     const def = defaultState();
+    console.log('[FIRESTORE] Iniciando carga desde Firestore...');
 
     // Leer players
     const playersSnap = await fsGetDoc(fsDoc(db, 'players', 'data'));
     const playersData = playersSnap.exists() ? playersSnap.data() : {};
+    console.log('[FIRESTORE] Players cargados:', playersData);
 
     // Leer results (partidos de grupos)
     const resultsSnap = await fsGetDoc(fsDoc(db, 'results', 'data'));
     const resultsData = resultsSnap.exists() ? resultsSnap.data() : {};
+    console.log('[FIRESTORE] Results cargados:', resultsData);
 
     // Leer knockoutResults
     const koSnap = await fsGetDoc(fsDoc(db, 'results', 'knockout'));
@@ -1728,6 +1731,7 @@ async function loadStateFromFirestore() {
     // Leer predictions
     const predsSnap = await fsGetDoc(fsDoc(db, 'predictions', 'data'));
     const predsData = predsSnap.exists() ? predsSnap.data() : {};
+    console.log('[FIRESTORE] Predictions cargadas:', predsData);
 
     // Leer config (adminPassword)
     const cfgSnap = await fsGetDoc(fsDoc(db, 'players', 'config'));
@@ -1735,11 +1739,14 @@ async function loadStateFromFirestore() {
 
     // Ensamblar state
     ['p1','p2','p3','p4'].forEach(id => {
+      // Las predicciones vienen con claves string desde Firestore — se mantienen como string
+      const preds = (predsData[id]) || {};
       state.players[id] = {
         name:        (playersData[id] && playersData[id].name)   || def.players[id].name,
         avatar:      (playersData[id] && playersData[id].avatar) || def.players[id].avatar,
-        predictions: (predsData[id])                             || {},
+        predictions: preds,
       };
+      console.log(`[FIRESTORE] Jugador ${id} — predicciones cargadas: ${Object.keys(preds).length}`);
     });
 
     // Convertir keys de results a número (Firestore los devuelve como string)
@@ -1750,6 +1757,7 @@ async function loadStateFromFirestore() {
 
     state.knockoutResults = koData || {};
     state.adminPassword   = cfgData.adminPassword || def.adminPassword;
+    console.log('[FIRESTORE] Carga completa ✓ — resultados:', Object.keys(state.results).length);
 
   } catch(e) {
     console.error('Error cargando desde Firestore:', e);
@@ -1782,13 +1790,16 @@ async function saveState() {
     });
 
     // Guardar en paralelo en las 4 colecciones
+    // IMPORTANTE: predictions se guarda SIN merge para que los borrados se reflejen en Firestore
+    console.log('[FIRESTORE] Guardando estado...', { playersInfo, predsData, resultsData });
     await Promise.all([
       fsSetDoc(fsDoc(db, 'players',     'data'),     playersInfo,  { merge: true }),
       fsSetDoc(fsDoc(db, 'players',     'config'),   { adminPassword: state.adminPassword }, { merge: true }),
       fsSetDoc(fsDoc(db, 'results',     'data'),     resultsData,  { merge: true }),
       fsSetDoc(fsDoc(db, 'results',     'knockout'), state.knockoutResults || {}, { merge: true }),
-      fsSetDoc(fsDoc(db, 'predictions', 'data'),     predsData,    { merge: true }),
+      fsSetDoc(fsDoc(db, 'predictions', 'data'),     predsData),   // sin merge: borra campos eliminados
     ]);
+    console.log('[FIRESTORE] Estado guardado correctamente ✓');
   } catch(e) {
     console.error('Error guardando en Firestore:', e);
     showToast('⚠️ Error al guardar en Firestore');
@@ -1814,8 +1825,13 @@ function subscribeToFirestore() {
   fsOnSnap(fsDoc(db, 'predictions', 'data'), snap => {
     if (!snap.exists()) return;
     const predsData = snap.data();
+    console.log('[FIRESTORE] Snapshot de predictions recibido:', predsData);
     ['p1','p2','p3','p4'].forEach(id => {
-      if (predsData[id] !== undefined) state.players[id].predictions = predsData[id];
+      // Las claves vienen como string desde Firestore — se mantienen como string
+      if (predsData[id] !== undefined) {
+        state.players[id].predictions = predsData[id];
+        console.log(`[FIRESTORE] Predicciones actualizadas para ${id}: ${Object.keys(predsData[id]).length} partidos`);
+      }
     });
     if (currentPlayer) renderAll();
   });
@@ -1951,7 +1967,7 @@ function renderMatches() {
   Object.keys(groups).sort().forEach(g => {
     html += `<div class="group-title">Grupo ${g}</div><div class="matches-grid">`;
     groups[g].forEach(m => {
-      const pred = ps.predictions[m.id];
+      const pred = ps.predictions[String(m.id)];
       const result = state.results[m.id];
       let cardClass = 'match-card';
       let badge = '';
@@ -1987,9 +2003,9 @@ function renderMatches() {
             <div class="team-name">${m.home}</div>
           </div>
           <div class="score-area">
-            <input type="number" class="score-box" id="pred-${m.id}-h" value="${predH}" min="0" max="20" placeholder="–" onchange="autoSave(${m.id})">
+            <input type="number" class="score-box" id="pred-${m.id}-h" value="${predH}" min="0" max="20" placeholder="–" oninput="autoSave(${m.id})" onchange="autoSave(${m.id})">
             <span class="score-sep">:</span>
-            <input type="number" class="score-box" id="pred-${m.id}-a" value="${predA}" min="0" max="20" placeholder="–" onchange="autoSave(${m.id})">
+            <input type="number" class="score-box" id="pred-${m.id}-a" value="${predA}" min="0" max="20" placeholder="–" oninput="autoSave(${m.id})" onchange="autoSave(${m.id})">
           </div>
           <div class="team">
             <span class="team-flag">${aFlag}</span>
@@ -2037,7 +2053,8 @@ function savePrediction(matchId, silent = false) {
     return;
   }
 
-  state.players[currentPlayer].predictions[matchId] = { home: hNum, away: aNum };
+  state.players[currentPlayer].predictions[String(matchId)] = { home: hNum, away: aNum };
+  console.log(`[SAVE] Predicción guardada — jugador: ${currentPlayer}, partido: ${matchId}, marcador: ${hNum}-${aNum}`);
   saveState();
   if (!silent) showToast('✓ Predicción guardada');
   renderMatches();
@@ -2055,7 +2072,7 @@ function saveAllPredictions() {
     const hNum = parseInt(hVal);
     const aNum = parseInt(aVal);
     if (isNaN(hNum) || isNaN(aNum) || hNum < 0 || aNum < 0) return;
-    state.players[currentPlayer].predictions[m.id] = { home: hNum, away: aNum };
+    state.players[currentPlayer].predictions[String(m.id)] = { home: hNum, away: aNum };
     saved++;
   });
   saveState();
@@ -2064,7 +2081,8 @@ function saveAllPredictions() {
 }
 
 function clearPrediction(matchId) {
-  delete state.players[currentPlayer].predictions[matchId];
+  console.log(`[CLEAR] Borrando predicción — jugador: ${currentPlayer}, partido: ${matchId}`);
+  delete state.players[currentPlayer].predictions[String(matchId)];
   saveState();
   renderMatches();
 }
@@ -2089,7 +2107,8 @@ function calcPoints(playerId) {
   const ps = state.players[playerId];
   let pts = 0;
   Object.keys(ps.predictions).forEach(mid => {
-    const result = state.results[mid];
+    // results usa claves numéricas; predictions usa claves string
+    const result = state.results[parseInt(mid)];
     if (result !== undefined) pts += calcMatchPoints(ps.predictions[mid], result);
   });
   return pts;
@@ -2099,7 +2118,7 @@ function calcDetails(playerId) {
   const ps = state.players[playerId];
   let exact = 0, tendency = 0, wrong = 0, pending = 0;
   Object.keys(ps.predictions).forEach(mid => {
-    const result = state.results[mid];
+    const result = state.results[parseInt(mid)];
     if (result === undefined) { pending++; return; }
     const pts = calcMatchPoints(ps.predictions[mid], result);
     if (pts === 3) exact++;
