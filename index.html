@@ -477,6 +477,132 @@
     font-weight: 700;
   }
 
+  /* ── COMPARAR PRONÓSTICOS ── */
+  .btn-compare {
+    padding: 6px 10px;
+    background: rgba(255,214,0,0.08);
+    color: var(--amarillo);
+    border: 1px solid rgba(255,214,0,0.25);
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .btn-compare:hover {
+    background: rgba(255,214,0,0.18);
+    border-color: var(--amarillo);
+  }
+
+  .compare-panel {
+    display: none;
+    margin-top: 12px;
+    background: var(--fondo3);
+    border: 1px solid rgba(255,214,0,0.2);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .compare-panel.open { display: block; }
+
+  .compare-panel-title {
+    padding: 8px 12px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--amarillo);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    background: rgba(255,214,0,0.05);
+  }
+
+  .compare-rows {
+    padding: 6px 0;
+  }
+
+  .compare-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 12px;
+    gap: 10px;
+    font-size: 0.8rem;
+    transition: background 0.15s;
+  }
+
+  .compare-row:hover { background: rgba(255,255,255,0.03); }
+
+  .compare-row.is-me {
+    background: rgba(0,200,83,0.06);
+  }
+
+  .compare-player {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    min-width: 0;
+  }
+
+  .compare-avatar { font-size: 1.1rem; flex-shrink: 0; }
+
+  .compare-name {
+    font-weight: 600;
+    color: var(--texto);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100px;
+  }
+
+  .compare-me-tag {
+    font-size: 0.6rem;
+    background: rgba(0,200,83,0.2);
+    color: var(--verde);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .compare-score {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .compare-score-val {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    color: var(--texto);
+    min-width: 40px;
+    text-align: center;
+  }
+
+  .compare-no-pred {
+    color: var(--texto2);
+    font-size: 0.75rem;
+    font-style: italic;
+  }
+
+  .compare-pts-badge {
+    font-size: 0.62rem;
+    padding: 1px 6px;
+    border-radius: 6px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .cpts-3 { background: rgba(0,200,83,0.2); color: var(--verde); }
+  .cpts-1 { background: rgba(255,214,0,0.15); color: var(--amarillo); }
+  .cpts-0 { background: rgba(229,57,53,0.15); color: var(--rojo); }
+  .cpts-pending { background: rgba(138,155,176,0.12); color: var(--texto2); }
+
   .badge-saved { background: rgba(0,200,83,0.15); color: var(--verde); }
   .badge-correct { background: rgba(0,200,83,0.25); color: var(--verde); }
   .badge-wrong { background: rgba(229,57,53,0.2); color: var(--rojo); }
@@ -1288,6 +1414,58 @@
     .bracket { min-width: 700px; }
     .tab { font-size: 0.68rem; padding: 8px 4px; }
   }
+
+  /* ── ACTUALIZAR RESULTADOS OFICIALES ── */
+  .btn-update-official {
+    padding: 10px 22px;
+    background: linear-gradient(135deg, #0288D1, #0056A3);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 12px rgba(2,136,209,0.3);
+  }
+  .btn-update-official:hover { background: linear-gradient(135deg, #0297e8, #0068c8); box-shadow: 0 4px 20px rgba(2,136,209,0.5); }
+  .btn-update-official:disabled { opacity: 0.6; cursor: not-allowed; }
+  .btn-update-official .spin { display: inline-block; animation: spin360 1s linear infinite; }
+  @keyframes spin360 { to { transform: rotate(360deg); } }
+
+  .update-log {
+    background: var(--fondo3);
+    border: 1px solid var(--borde);
+    border-radius: 10px;
+    padding: 16px;
+    margin-top: 16px;
+    font-size: 0.78rem;
+    color: var(--texto2);
+    max-height: 260px;
+    overflow-y: auto;
+    display: none;
+  }
+  .update-log.visible { display: block; }
+  .update-log .log-line { padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .update-log .log-ok  { color: var(--verde); }
+  .update-log .log-warn { color: var(--amarillo); }
+  .update-log .log-err { color: var(--rojo); }
+  .update-log .log-info { color: #64B5F6; }
+
+  .update-summary {
+    background: rgba(0,200,83,0.07);
+    border: 1px solid rgba(0,200,83,0.2);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-top: 12px;
+    font-size: 0.82rem;
+    display: none;
+  }
+  .update-summary.visible { display: block; }
+  .update-summary strong { color: var(--verde); }
 </style>
 </head>
 <body>
@@ -1417,11 +1595,18 @@
     <div id="admin-content" style="display:none">
       <div class="section-header">
         <h2>Ingresar Resultados</h2>
-        <div style="display:flex;gap:10px;align-items:center">
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
           <span class="info-pill">Solo para el administrador</span>
+          <button class="btn-update-official" id="btn-actualizar-oficial" onclick="actualizarResultadosOficiales()">
+            🔄 Actualizar resultados oficiales
+          </button>
           <button class="btn-secondary" style="font-size:0.78rem;padding:5px 12px" onclick="lockAdmin()">🔒 Bloquear</button>
         </div>
       </div>
+
+      <!-- Panel de log de actualización -->
+      <div id="update-log-panel" class="update-log"></div>
+      <div id="update-summary-panel" class="update-summary"></div>
       <div class="jornada-bar">
         <button class="jornada-btn active" onclick="filterAdminJornada(0, this)">Todas</button>
         <button class="jornada-btn" onclick="filterAdminJornada(1, this)">Jornada 1</button>
@@ -2018,6 +2203,11 @@ function renderMatches() {
         </div>` : ''}
         <div class="match-actions">
           ${pred !== undefined ? `<button class="btn-clear" onclick="clearPrediction(${m.id})" title="Borrar predicción">✕ Limpiar</button>` : ''}
+          <button class="btn-compare" onclick="toggleCompare(${m.id})" id="cmp-btn-${m.id}" title="Ver pronósticos de otros jugadores">👥 Comparar</button>
+        </div>
+        <div class="compare-panel" id="cmp-panel-${m.id}">
+          <div class="compare-panel-title">👥 Pronósticos del grupo</div>
+          <div class="compare-rows" id="cmp-rows-${m.id}"></div>
         </div>
       </div>`;
     });
@@ -2085,6 +2275,71 @@ function clearPrediction(matchId) {
   delete state.players[currentPlayer].predictions[String(matchId)];
   saveState();
   renderMatches();
+}
+
+// ═══════════════════════════════════════════
+//  COMPARAR PRONÓSTICOS
+// ═══════════════════════════════════════════
+function toggleCompare(matchId) {
+  const panel = document.getElementById(`cmp-panel-${matchId}`);
+  const btn   = document.getElementById(`cmp-btn-${matchId}`);
+  if (!panel) return;
+
+  const isOpen = panel.classList.contains('open');
+  if (isOpen) {
+    panel.classList.remove('open');
+    btn.innerHTML = '👥 Comparar';
+  } else {
+    renderComparePanel(matchId);
+    panel.classList.add('open');
+    btn.innerHTML = '👥 Ocultar';
+  }
+}
+
+function renderComparePanel(matchId) {
+  const rows = document.getElementById(`cmp-rows-${matchId}`);
+  if (!rows) return;
+
+  const result = state.results[matchId];
+  const players = getPlayers();
+
+  const html = players.map(p => {
+    const isMe = p.id === currentPlayer;
+    const pred = p.predictions[String(matchId)];
+
+    let scoreHtml = '';
+    let badgeHtml = '';
+
+    if (pred !== undefined) {
+      scoreHtml = `<span class="compare-score-val">${pred.home} - ${pred.away}</span>`;
+      if (result !== undefined) {
+        const pts = calcMatchPoints(pred, result);
+        if (pts === 3)      badgeHtml = `<span class="compare-pts-badge cpts-3">+3 ✓</span>`;
+        else if (pts === 1) badgeHtml = `<span class="compare-pts-badge cpts-1">+1 →</span>`;
+        else                badgeHtml = `<span class="compare-pts-badge cpts-0">✗</span>`;
+      } else {
+        badgeHtml = `<span class="compare-pts-badge cpts-pending">Pendiente</span>`;
+      }
+    } else {
+      scoreHtml = `<span class="compare-no-pred">Sin predicción</span>`;
+      badgeHtml = `<span class="compare-pts-badge cpts-pending">—</span>`;
+    }
+
+    return `
+      <div class="compare-row${isMe ? ' is-me' : ''}">
+        <div class="compare-player">
+          <span class="compare-avatar">${p.avatar}</span>
+          <span class="compare-name">${p.name}</span>
+          ${isMe ? '<span class="compare-me-tag">Tú</span>' : ''}
+        </div>
+        <div class="compare-score">
+          ${scoreHtml}
+          ${badgeHtml}
+        </div>
+      </div>`;
+  }).join('');
+
+  rows.innerHTML = html;
 }
 
 // ═══════════════════════════════════════════
@@ -2714,6 +2969,260 @@ function renderAdmin() {
   });
 
   document.getElementById('admin-container').innerHTML = html;
+}
+
+// ═══════════════════════════════════════════
+//  ACTUALIZAR RESULTADOS OFICIALES — TheSportsDB
+// ═══════════════════════════════════════════
+//
+//  ┌──────────────────────────────────────────────────────────┐
+//  │  CONFIGURACIÓN API KEY                                   │
+//  │                                                          │
+//  │  TheSportsDB Free (v1) NO requiere API Key.              │
+//  │  La función usa el endpoint público gratuito:            │
+//  │    https://www.thesportsdb.com/api/v1/json/3/            │
+//  │                                                          │
+//  │  Si tienes suscripción Patreon (v2), cambia la línea:    │
+//  │    const TSDB_API_KEY = "3";   ← cambia "3" por tu key  │
+//  │  Encuéntrala en: https://www.thesportsdb.com/dashboard   │
+//  └──────────────────────────────────────────────────────────┘
+const TSDB_API_KEY = "3"; // "3" = free tier sin key. Reemplaza por tu key Patreon si tienes.
+const TSDB_LEAGUE_ID = "4980"; // FIFA World Cup 2026
+
+// Mapa de nombres en TheSportsDB → nombres en tu app
+const TSDB_TEAM_NAME_MAP = {
+  // Inglés → Español (los nombres de tu app)
+  'Mexico':             'México',
+  'South Africa':       'Sudáfrica',
+  'South Korea':        'Corea del Sur',
+  'Czech Republic':     'República Checa',
+  'Canada':             'Canadá',
+  'Bosnia and Herzegovina': 'Bosnia y Herzegovina',
+  'Qatar':              'Catar',
+  'Switzerland':        'Suiza',
+  'Brazil':             'Brasil',
+  'Morocco':            'Marruecos',
+  'Haiti':              'Haití',
+  'Scotland':           'Escocia',
+  'United States':      'Estados Unidos',
+  'USA':                'Estados Unidos',
+  'Paraguay':           'Paraguay',
+  'Australia':          'Australia',
+  'Turkey':             'Turquía',
+  'Germany':            'Alemania',
+  'Curacao':            'Curazao',
+  "Ivory Coast":        'Costa de Marfil',
+  "Cote d'Ivoire":      'Costa de Marfil',
+  'Ecuador':            'Ecuador',
+  'Netherlands':        'Países Bajos',
+  'Holland':            'Países Bajos',
+  'Japan':              'Japón',
+  'Sweden':             'Suecia',
+  'Tunisia':            'Túnez',
+  'Belgium':            'Bélgica',
+  'Egypt':              'Egipto',
+  'Iran':               'Irán',
+  'New Zealand':        'Nueva Zelanda',
+  'Spain':              'España',
+  'Cape Verde':         'Cabo Verde',
+  'Saudi Arabia':       'Arabia Saudita',
+  'Uruguay':            'Uruguay',
+  'France':             'Francia',
+  'Senegal':            'Senegal',
+  'Iraq':               'Irak',
+  'Norway':             'Noruega',
+  'Argentina':          'Argentina',
+  'Algeria':            'Argelia',
+  'Austria':            'Austria',
+  'Jordan':             'Jordania',
+  'Portugal':           'Portugal',
+  'DR Congo':           'RD Congo',
+  'Congo DR':           'RD Congo',
+  'Uzbekistan':         'Uzbekistán',
+  'Colombia':           'Colombia',
+  'England':            'Inglaterra',
+  'Croatia':            'Croacia',
+  'Ghana':              'Ghana',
+  'Panama':             'Panamá',
+  // Por si ya vienen en español exacto (no hace daño)
+  'México':'México','Sudáfrica':'Sudáfrica','Corea del Sur':'Corea del Sur',
+};
+
+function normalizarNombreEquipo(nombre) {
+  if (!nombre) return nombre;
+  return TSDB_TEAM_NAME_MAP[nombre] || nombre;
+}
+
+// Buscar partido local por equipos normalizados
+function buscarPartidoLocal(homeNorm, awayNorm) {
+  // Intento exacto
+  let m = MATCHES.find(m => m.home === homeNorm && m.away === awayNorm);
+  if (m) return m;
+  // Intento invertido (por si TheSportsDB los lista al revés)
+  m = MATCHES.find(m => m.home === awayNorm && m.away === homeNorm);
+  if (m) return { ...m, _invertido: true };
+  return null;
+}
+
+function logLine(text, tipo = '') {
+  const panel = document.getElementById('update-log-panel');
+  if (!panel) return;
+  const div = document.createElement('div');
+  div.className = 'log-line' + (tipo ? ' log-' + tipo : '');
+  div.textContent = text;
+  panel.appendChild(div);
+  panel.scrollTop = panel.scrollHeight;
+}
+
+async function actualizarResultadosOficiales() {
+  const btn = document.getElementById('btn-actualizar-oficial');
+  const logPanel = document.getElementById('update-log-panel');
+  const summaryPanel = document.getElementById('update-summary-panel');
+
+  // Reset UI
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin">🔄</span> Consultando TheSportsDB…';
+  logPanel.innerHTML = '';
+  logPanel.classList.add('visible');
+  summaryPanel.classList.remove('visible');
+  summaryPanel.innerHTML = '';
+
+  let actualizados = 0, sinResultado = 0, noEncontrados = 0, errores = 0;
+
+  try {
+    logLine('📡 Conectando con TheSportsDB…', 'info');
+
+    // TheSportsDB API: buscar eventos de la liga/temporada
+    // Intentamos con el endpoint de búsqueda por liga y temporada 2026
+    const season = '2026';
+    const url = `https://www.thesportsdb.com/api/v1/json/${TSDB_API_KEY}/eventsseason.php?id=${TSDB_LEAGUE_ID}&s=${season}`;
+
+    logLine(`🔗 URL: ${url}`, 'info');
+
+    let eventos = [];
+    try {
+      const resp = await fetch(url);
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      const data = await resp.json();
+      eventos = data.events || [];
+      logLine(`✓ Recibidos ${eventos.length} eventos del torneo`, 'ok');
+    } catch (fetchErr) {
+      // Fallback: intentar con búsqueda por nombre del evento
+      logLine(`⚠️ Endpoint de temporada falló: ${fetchErr.message}`, 'warn');
+      logLine('🔄 Intentando búsqueda alternativa por nombre…', 'info');
+      try {
+        const url2 = `https://www.thesportsdb.com/api/v1/json/${TSDB_API_KEY}/searchevents.php?e=FIFA+World+Cup+2026`;
+        const resp2 = await fetch(url2);
+        const data2 = await resp2.json();
+        eventos = data2.event || [];
+        logLine(`✓ Búsqueda alternativa: ${eventos.length} eventos`, 'ok');
+      } catch (e2) {
+        throw new Error('No se pudo obtener datos de TheSportsDB. Verifica tu conexión o API Key.');
+      }
+    }
+
+    if (eventos.length === 0) {
+      logLine('⚠️ TheSportsDB no tiene aún resultados para el Mundial 2026.', 'warn');
+      logLine('   Los resultados estarán disponibles cuando comiencen los partidos (11 Jun 2026).', 'warn');
+      summaryPanel.innerHTML = `<strong>Sin datos disponibles aún.</strong> TheSportsDB publicará los resultados cuando los partidos se jueguen. Puedes volver a intentarlo durante o después de cada partido.`;
+      summaryPanel.classList.add('visible');
+      return;
+    }
+
+    // Filtrar solo partidos con resultado (FT = Full Time)
+    const jugados = eventos.filter(e =>
+      e.strStatus === 'Match Finished' ||
+      e.strStatus === 'FT' ||
+      e.intHomeScore !== null && e.intHomeScore !== '' &&
+      e.intAwayScore !== null && e.intAwayScore !== ''
+    );
+
+    logLine(`📊 Partidos con resultado: ${jugados.length} de ${eventos.length}`, 'info');
+
+    if (jugados.length === 0) {
+      logLine('ℹ️ Ningún partido tiene resultado aún. Vuelve a intentarlo después de los primeros partidos.', 'warn');
+      summaryPanel.innerHTML = `<strong>Sin resultados aún.</strong> El torneo aún no ha comenzado o los partidos están pendientes.`;
+      summaryPanel.classList.add('visible');
+      return;
+    }
+
+    // Procesar cada partido con resultado
+    for (const ev of jugados) {
+      const homeRaw = ev.strHomeTeam;
+      const awayRaw = ev.strAwayTeam;
+      const homeNorm = normalizarNombreEquipo(homeRaw);
+      const awayNorm = normalizarNombreEquipo(awayRaw);
+      const homeScore = parseInt(ev.intHomeScore);
+      const awayScore = parseInt(ev.intAwayScore);
+
+      if (isNaN(homeScore) || isNaN(awayScore)) {
+        sinResultado++;
+        continue;
+      }
+
+      const partido = buscarPartidoLocal(homeNorm, awayNorm);
+
+      if (!partido) {
+        noEncontrados++;
+        logLine(`⚠️ No encontrado: "${homeRaw}" vs "${awayRaw}" → normalizado: "${homeNorm}" vs "${awayNorm}"`, 'warn');
+        continue;
+      }
+
+      const matchId = partido.id;
+      let h = homeScore, a = awayScore;
+      if (partido._invertido) { h = awayScore; a = homeScore; }
+
+      const anterior = state.results[matchId];
+      const cambio = !anterior || anterior.home !== h || anterior.away !== a;
+
+      if (cambio) {
+        state.results[matchId] = { home: h, away: a };
+        actualizados++;
+        logLine(`✓ P.${matchId} ${partido.home} ${h}-${a} ${partido.away}`, 'ok');
+      }
+    }
+
+    // Guardar en Firestore si hubo cambios
+    if (actualizados > 0) {
+      logLine(`💾 Guardando ${actualizados} resultado(s) en Firestore…`, 'info');
+      await saveState();
+      logLine('✓ Firestore actualizado', 'ok');
+
+      // Refrescar todas las vistas
+      renderAll();
+      if (currentSection !== 'admin') renderAdmin();
+    }
+
+    // Resumen final
+    const totalLocal = MATCHES.length;
+    const totalConResult = Object.keys(state.results).length;
+    summaryPanel.innerHTML = `
+      <strong>✅ Actualización completada</strong><br>
+      <span style="color:var(--verde)">+${actualizados} resultado(s) nuevos/actualizados</span> ·
+      ${totalConResult} de ${totalLocal} partidos con resultado ·
+      ${noEncontrados > 0 ? `<span style="color:var(--amarillo)">${noEncontrados} sin mapeo</span>` : ''}
+      <br><span style="font-size:0.73rem;color:var(--texto2);margin-top:4px;display:block">
+      Fuente: TheSportsDB · ${new Date().toLocaleString('es-CO', {timeZone:'America/Bogota'})}
+      </span>`;
+    summaryPanel.classList.add('visible');
+
+    if (actualizados === 0) {
+      showToast('ℹ️ Sin cambios — resultados ya estaban al día');
+    } else {
+      showToast(`✓ ${actualizados} resultado(s) actualizados`);
+    }
+
+  } catch (err) {
+    errores++;
+    logLine(`❌ Error: ${err.message}`, 'err');
+    summaryPanel.innerHTML = `<strong style="color:var(--rojo)">❌ Error al actualizar:</strong> ${err.message}`;
+    summaryPanel.classList.add('visible');
+    showToast('❌ Error al consultar TheSportsDB');
+    console.error('[TSDB]', err);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '🔄 Actualizar resultados oficiales';
+  }
 }
 
 function saveResult(matchId) {
