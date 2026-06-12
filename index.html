@@ -998,6 +998,7 @@
     width: 100%;
     border-collapse: collapse;
     font-size: 0.78rem;
+    table-layout: fixed;
   }
 
   .grupo-table th {
@@ -1044,6 +1045,13 @@
     gap: 7px;
     font-weight: 600;
     padding-left: 4px;
+    overflow: hidden;
+  }
+
+  .td-team span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .td-team img {
