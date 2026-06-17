@@ -3533,7 +3533,7 @@ function renderEliminatorias() {
     buildMatch(p.id, p.home, p.away, p.label, classified)
   );
 
-  // ── Octavos de final: 8 partidos ──────────
+  // ── Cuartos de final: 8 partidos ──────────
   // Agrupación: QF1=M1vsM2, QF2=M3vsM4, QF3=M5vsM6, QF4=M7vsM8
   //             QF5=M9vsM10, QF6=M11vsM12, QF7=M13vsM14, QF8=M15vsM16
   const QF_PAIRS = [[0,1],[2,3],[4,5],[6,7],[8,9],[10,11],[12,13],[14,15]];
@@ -3541,14 +3541,14 @@ function renderEliminatorias() {
     buildMatchFromWinners(`qf_${i}`, `QF${i+1}`, r16[a], r16[b])
   );
 
-  // ── Octavos de final: 4 partidos ────────────────
+  // ── Semifinales: 4 partidos ────────────────
   // SF1=QF1vsQF2, SF2=QF3vsQF4, SF3=QF5vsQF6, SF4=QF7vsQF8
   const SF_PAIRS = [[0,1],[2,3],[4,5],[6,7]];
   const sf = SF_PAIRS.map(([a,b], i) =>
     buildMatchFromWinners(`sf_${i}`, `SF${i+1}`, qf[a], qf[b])
   );
 
-  // ── Semifinales ────────────────────────────────
+  // ── Finales ────────────────────────────────
   // Semifinal A: ganador SF1 vs SF2 → Gran Final
   const sfA = buildMatchFromWinners('final_sfa', 'Semif. A', sf[0], sf[1]);
   // Semifinal B: ganador SF3 vs SF4 → Gran Final
@@ -3579,7 +3579,7 @@ function renderEliminatorias() {
   ], canEdit);
 
   // ── Cuartos ────────────────────────────────
-  html += buildRoundSection('CUARTOS DE FINAL', [
+  html += buildRoundSection('OCTAVOS DE FINAL', [
     { title: 'QF1 · QF2 — Sup. Izq.', matches: qf.slice(0, 2) },
     { title: 'QF3 · QF4 — Sup. Der.', matches: qf.slice(2, 4) },
     { title: 'QF5 · QF6 — Inf. Izq.', matches: qf.slice(4, 6) },
@@ -3587,7 +3587,7 @@ function renderEliminatorias() {
   ], canEdit);
 
   // ── Semifinales ────────────────────────────
-  html += buildRoundSection('SEMIFINALES', [
+  html += buildRoundSection('CUARTOS DE FINAL', [
     { title: 'SF1 · Sup. Izq.', matches: [sf[0]] },
     { title: 'SF2 · Sup. Der.', matches: [sf[1]] },
     { title: 'SF3 · Inf. Izq.', matches: [sf[2]] },
@@ -3596,7 +3596,7 @@ function renderEliminatorias() {
 
   // ── Finales ────────────────────────────────
   html += `<div class="bracket-section">
-    <div class="bracket-section-title" style="color:var(--gold)">🏆 FINALES</div>
+    <div class="bracket-section-title" style="color:var(--gold)">🏆 SEMIFINALES</div>
     <div style="display:flex;gap:0;width:100%">
       <div class="bracket-round" style="flex:1">
         <div class="bracket-round-title">
