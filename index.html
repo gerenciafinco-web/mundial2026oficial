@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Polla Mundial 2026 ⚽</title>
+<title>Copa Mundial de la FIFA 2026 🏆</title>
 
 <!-- ══════════════════════════════════════════════════════════
      FIREBASE SDK v10
@@ -105,20 +105,23 @@
   }
 
   .logo-icon {
-    font-size: 2rem;
-    animation: spin 8s linear infinite;
+    width: 40px;
+    height: 60px;
+    flex-shrink: 0;
+    animation: trophy-pulse 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 6px rgba(245,197,24,0.6));
   }
 
-  @keyframes spin {
-    0%,100% { transform: rotate(0deg) scale(1); }
-    50% { transform: rotate(180deg) scale(1.1); }
+  @keyframes trophy-pulse {
+    0%,100% { transform: scale(1);    filter: drop-shadow(0 0 5px rgba(245,197,24,0.5)); }
+    50%      { transform: scale(1.07); filter: drop-shadow(0 0 14px rgba(245,197,24,0.85)); }
   }
 
   .logo h1 {
     font-family: 'Bebas Neue', cursive;
     font-size: 1.8rem;
     letter-spacing: 2px;
-    color: var(--verde);
+    color: #ffffff;
     line-height: 1;
   }
 
@@ -1121,17 +1124,27 @@
   .llaves-wrapper {
     overflow-x: auto;
     padding-bottom: 16px;
+    display: flex;
+    justify-content: center;
   }
   .llaves-bracket {
     display: grid;
     grid-template-columns:
-      170px 130px 110px 100px 110px 130px 170px;
+      minmax(150px,1fr)
+      minmax(120px,.75fr)
+      minmax(100px,.65fr)
+      minmax(110px,.7fr)
+      minmax(100px,.65fr)
+      minmax(120px,.75fr)
+      minmax(150px,1fr);
     grid-template-rows: auto;
     gap: 0;
-    min-width: 930px;
+    min-width: 860px;
+    width: 100%;
+    max-width: 1200px;
     position: relative;
     align-items: center;
-    padding: 12px 0;
+    padding: 16px 8px;
   }
   .llaves-col {
     display: flex;
@@ -1698,14 +1711,271 @@
 
   .btn-danger:hover { background: rgba(229,57,53,0.2); }
 
-  @media (max-width: 600px) {
-    .player-grid { grid-template-columns: 1fr 1fr 1fr; }
-    .matches-grid { grid-template-columns: 1fr; }
-    .score-box { width: 36px; height: 36px; font-size: 1.1rem; }
-    .logo h1 { font-size: 1.4rem; }
-    .grupos-grid { grid-template-columns: 1fr; }
-    .bracket { min-width: 700px; }
-    .tab { font-size: 0.68rem; padding: 8px 4px; }
+  /* ══════════════════════════════════════════════════════════
+     RESPONSIVE MÓVIL — optimizado sin scroll horizontal
+     ══════════════════════════════════════════════════════════ */
+
+  @media (max-width: 768px) {
+    /* ── App padding ── */
+    #app { padding: 12px; }
+
+    /* ── Header ── */
+    .header-inner { padding: 10px 14px; gap: 8px; }
+    .logo h1 { font-size: 1.4rem; letter-spacing: 1px; }
+    .logo-icon { width: 32px; height: 48px; }
+    .header-nav { gap: 4px; }
+    .nav-btn { padding: 6px 10px; font-size: 0.75rem; }
+
+    /* ── Tabs: scroll horizontal sin barra visible ── */
+    .tabs {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding: 4px;
+      gap: 3px;
+      border-radius: 10px;
+      margin-bottom: 16px;
+    }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab {
+      flex: 0 0 auto;
+      min-width: unset;
+      white-space: nowrap;
+      font-size: 0.72rem;
+      padding: 8px 10px;
+      border-radius: 7px;
+    }
+
+    /* ── Barra jugador actual ── */
+    .current-user-bar {
+      padding: 8px 12px;
+      font-size: 0.82rem;
+      gap: 8px;
+      flex-wrap: nowrap;
+    }
+    .btn-cambiar { padding: 4px 10px; font-size: 0.72rem; white-space: nowrap; }
+
+    /* ── Jornada bar ── */
+    .jornada-bar {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      gap: 6px;
+      padding-bottom: 4px;
+    }
+    .jornada-bar::-webkit-scrollbar { display: none; }
+    .jornada-btn { flex-shrink: 0; padding: 7px 14px; font-size: 0.78rem; }
+
+    /* ── Section header ── */
+    .section-header { margin-bottom: 14px; gap: 8px; }
+    .section-header h2 { font-size: 1.5rem; }
+    .section-header > div { flex-wrap: wrap; gap: 8px; }
+
+    /* ── Player select ── */
+    #player-select-screen { margin: 30px auto; padding: 0 14px; }
+    .screen-title { font-size: 2.2rem; }
+    .screen-sub { margin-bottom: 24px; font-size: 0.88rem; }
+    .player-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .player-card { padding: 20px 14px; }
+    .player-avatar { font-size: 2.8rem; }
+    .player-name { font-size: 1.3rem; }
+
+    /* ── Match cards ── */
+    .matches-grid { grid-template-columns: 1fr; gap: 10px; }
+    .match-card { padding: 12px; }
+    .match-teams { gap: 6px; }
+    .score-box { width: 38px; height: 38px; font-size: 1.1rem; }
+    .score-area { gap: 4px; }
+    .team-name { font-size: 0.72rem; }
+
+    /* ── Fixture ── */
+    .fixture-match {
+      padding: 10px 12px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .fixture-teams { min-width: 0; flex: 1 1 100%; }
+    .fixture-result { font-size: 1.2rem; min-width: 50px; }
+    .fixture-status { font-size: 0.65rem; }
+
+    /* ── Grupos ── */
+    .grupos-grid { grid-template-columns: 1fr; gap: 14px; }
+    .grupo-table { font-size: 0.72rem; }
+    .grupo-table th { font-size: 0.62rem; padding: 0 4px; height: 30px; }
+    .grupo-table td { padding: 0 4px; height: 36px; }
+    .grupo-table td:first-child, .grupo-table th:first-child { padding-left: 8px; }
+    .td-team { gap: 5px; font-size: 0.72rem; }
+
+    /* ── Leaderboard ── */
+    .lb-header { padding: 14px 16px; }
+    .lb-title { font-size: 1.3rem; }
+    .lb-sub { font-size: 0.75rem; }
+    .lb-row { padding: 12px 14px; gap: 10px; }
+    .lb-pos { font-size: 1.2rem; width: 24px; }
+    .lb-name { font-size: 0.88rem; }
+    .lb-pts { font-size: 1.5rem; }
+    .lb-breakdown { gap: 8px; font-size: 0.68rem; }
+    .lb-stat strong { font-size: 0.88rem; }
+
+    /* ── Admin panel ── */
+    .admin-match-row { gap: 8px; }
+    .admin-teams { min-width: 0; flex: 1 1 100%; font-size: 0.82rem; }
+    .admin-card { padding: 12px; }
+    .btn-update-official { font-size: 0.78rem; padding: 8px 14px; }
+
+    /* ── Config ── */
+    .config-section { padding: 16px; }
+    .config-player-row { gap: 10px; }
+    .io-row { gap: 8px; }
+    .btn-export, .btn-import, .btn-danger { padding: 8px 14px; font-size: 0.8rem; }
+
+    /* ── Admin lock ── */
+    .admin-lock-row { flex-direction: column; align-items: center; }
+    .admin-lock-row .modal-input { max-width: 100% !important; }
+
+    /* ── Bracket / Eliminatorias: layout vertical en móvil (sin scroll horizontal) ── */
+
+    /* Quitar min-width que forzaba el scroll */
+    .bracket        { min-width: 0; width: 100%; }
+    .llaves-bracket { min-width: 0; width: 100%; }
+    .bracket-wrapper, .llaves-wrapper {
+      overflow: visible;
+      padding-bottom: 0;
+      margin: 0;
+      width: 100%;
+    }
+
+    /* Cada sección de ronda (Octavos, Cuartos…) apila sus columnas verticalmente */
+    .bracket-section > div[style*="display:flex"],
+    .bracket-section > div[style*="display: flex"] {
+      display: block !important;
+      width: 100%;
+    }
+
+    /* Cada ronda ocupa el ancho completo y se muestra como bloque */
+    .bracket-round {
+      display: block;
+      width: 100%;
+      border-right: none !important;
+      border-bottom: 1px solid var(--borde);
+    }
+    .bracket-round:last-child { border-bottom: none; }
+
+    /* Título de ronda más compacto */
+    .bracket-round-title {
+      font-size: 0.75rem;
+      padding: 6px 12px;
+      text-align: left;
+    }
+
+    /* Partidos en fila de 2 columnas dentro de cada ronda */
+    .bracket-matches {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      padding: 8px;
+    }
+
+    /* Tarjeta de partido compacta */
+    .bracket-match {
+      min-width: 0;
+      font-size: 0.68rem;
+    }
+    .bracket-team {
+      padding: 5px 7px;
+      font-size: 0.68rem;
+      min-height: 28px;
+      gap: 4px;
+    }
+    .bracket-team span[style*="flex:1"] {
+      font-size: 0.66rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .bracket-score { font-size: 0.85rem; }
+
+    /* Inputs de admin dentro de bracket-match */
+    .bracket-match input[type="number"] {
+      width: 28px !important;
+      height: 22px !important;
+      font-size: 0.72rem !important;
+    }
+    .bracket-match select {
+      font-size: 0.6rem !important;
+      padding: 1px 2px !important;
+    }
+    .bracket-match button {
+      padding: 2px 5px !important;
+      font-size: 0.6rem !important;
+    }
+
+    /* Sección de Finales: 3 columnas → apilar en columna */
+    .bracket-section > div > .bracket-round[style*="flex:1.5"],
+    .bracket-section > div > .bracket-round[style*="flex: 1.5"] {
+      order: -1; /* Gran Final primero */
+      border: 1px solid rgba(255,214,0,0.3) !important;
+      border-radius: 10px !important;
+      margin: 4px 4px 6px !important;
+    }
+
+    /* Campeón display */
+    .champion-display { padding: 10px 8px; }
+
+    /* Terceros grid: 2 columnas */
+    .terceros-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .tercero-slot { padding: 10px; }
+    .tercero-slot-label { font-size: 0.72rem; }
+    .tercero-select { font-size: 0.72rem; padding: 4px 6px; }
+
+    /* Vista llaves: ocultar en móvil (no es viable sin scroll), mostrar aviso */
+    #elim-vista-llaves {
+      display: none !important;
+    }
+    /* Ocultar botón de vista llaves */
+    [onclick*="switchVistaEliminatorias('llaves')"] {
+      display: none !important;
+    }
+
+    /* ── Compare panel ── */
+    .compare-name { max-width: 80px; }
+
+    /* ── Guardar Todo ── */
+    .btn-save-all { padding: 8px 16px; font-size: 0.8rem; }
+
+    /* ── Toast ── */
+    .save-toast { bottom: 12px; right: 12px; left: 12px; text-align: center; }
+
+    /* ── Stats ── */
+    .stats-section { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .stat-card { padding: 14px; }
+    .stat-big { font-size: 1.8rem; }
+
+    /* ── Terceros grid ── */
+    .terceros-grid { grid-template-columns: 1fr; gap: 8px; }
+    .terceros-panel { padding: 14px; }
+  }
+
+  /* ── Extra pequeño: ≤ 400px ── */
+  @media (max-width: 400px) {
+    .logo h1 { font-size: 1.15rem; }
+    .logo-icon { width: 26px; height: 39px; }
+    .tab { font-size: 0.67rem; padding: 7px 8px; }
+    .player-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .player-card { padding: 16px 10px; }
+    .player-name { font-size: 1.15rem; }
+    .player-avatar { font-size: 2.2rem; }
+    .score-box { width: 34px; height: 34px; font-size: 1rem; }
+    .section-header h2 { font-size: 1.3rem; }
+    .lb-breakdown { display: none; }
+    .lb-row { padding: 10px 12px; gap: 8px; }
+    .stats-section { grid-template-columns: 1fr; }
+    .admin-teams { font-size: 0.78rem; }
+    .grupo-table th, .grupo-table td { padding: 0 3px; }
+    .td-team { gap: 4px; font-size: 0.68rem; }
   }
 
   /* ── AVATARES PROFESIONALES (estilo Teams/Outlook) ── */
@@ -1840,8 +2110,65 @@
 <header>
   <div class="header-inner">
     <div class="logo">
-      <span class="logo-icon">⚽</span>
-      <h1>POLLA <span>MUNDIAL</span> 2026</h1>
+      <svg class="logo-icon" viewBox="0 0 60 90" xmlns="http://www.w3.org/2000/svg" aria-label="Copa Mundial FIFA">
+        <defs>
+          <linearGradient id="goldMain" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%"   stop-color="#fff7a0"/>
+            <stop offset="25%"  stop-color="#f5c518"/>
+            <stop offset="50%"  stop-color="#d4920a"/>
+            <stop offset="75%"  stop-color="#f5c518"/>
+            <stop offset="100%" stop-color="#b8780a"/>
+          </linearGradient>
+          <linearGradient id="goldDark" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%"   stop-color="#d4920a"/>
+            <stop offset="50%"  stop-color="#a0660a"/>
+            <stop offset="100%" stop-color="#d4920a"/>
+          </linearGradient>
+          <linearGradient id="goldBase" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%"   stop-color="#f5c518"/>
+            <stop offset="40%"  stop-color="#c8820a"/>
+            <stop offset="100%" stop-color="#f0b800"/>
+          </linearGradient>
+          <linearGradient id="goldShine" x1="0%" y1="0%" x2="60%" y2="100%">
+            <stop offset="0%"   stop-color="#fffde0" stop-opacity="0.9"/>
+            <stop offset="100%" stop-color="#d4920a" stop-opacity="0"/>
+          </linearGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="1.2" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <!-- Base / pedestal -->
+        <rect x="14" y="80" width="32" height="5" rx="2" fill="url(#goldBase)"/>
+        <rect x="18" y="76" width="24" height="5" rx="1.5" fill="url(#goldBase)"/>
+        <!-- Columna central -->
+        <rect x="25" y="58" width="10" height="20" rx="2" fill="url(#goldDark)"/>
+        <rect x="26.5" y="59" width="3" height="18" rx="1" fill="url(#goldShine)" opacity="0.5"/>
+        <!-- Cuerpo de la copa -->
+        <ellipse cx="30" cy="56" rx="12" ry="3.5" fill="url(#goldMain)"/>
+        <!-- Copa principal - cuerpo -->
+        <path d="M18 30 Q17 46 22 54 Q26 58 30 58 Q34 58 38 54 Q43 46 42 30 Z"
+              fill="url(#goldMain)" filter="url(#glow)"/>
+        <!-- Brillo lateral izquierdo -->
+        <path d="M21 32 Q20 44 23 52 Q24 54 25 55 Q22 50 21.5 42 Q21 36 22 32 Z"
+              fill="url(#goldShine)" opacity="0.6"/>
+        <!-- Detalle esfera humana en la copa -->
+        <ellipse cx="30" cy="40" rx="7" ry="7.5" fill="url(#goldDark)" opacity="0.35"/>
+        <ellipse cx="28.5" cy="38" rx="3" ry="3" fill="url(#goldShine)" opacity="0.3"/>
+        <!-- Asas izquierda -->
+        <path d="M18 32 Q8 30 9 40 Q10 50 19 48" stroke="url(#goldMain)" stroke-width="3.5"
+              fill="none" stroke-linecap="round" filter="url(#glow)"/>
+        <!-- Asas derecha -->
+        <path d="M42 32 Q52 30 51 40 Q50 50 41 48" stroke="url(#goldMain)" stroke-width="3.5"
+              fill="none" stroke-linecap="round" filter="url(#glow)"/>
+        <!-- Borde superior de la copa -->
+        <ellipse cx="30" cy="30" rx="12" ry="3" fill="url(#goldMain)"/>
+        <ellipse cx="30" cy="30" rx="9"  ry="1.8" fill="url(#goldShine)" opacity="0.4"/>
+        <!-- Línea decorativa -->
+        <rect x="20" y="55.5" width="20" height="1.5" rx="0.75" fill="url(#goldMain)" opacity="0.8"/>
+        <rect x="22" y="57.5" width="16" height="1"   rx="0.5"  fill="url(#goldMain)" opacity="0.7"/>
+      </svg>
+      <h1>COPA <span>MUNDIAL</span> FIFA 2026</h1>
     </div>
     <div class="header-nav" id="header-nav" style="display:none">
       <button class="nav-btn active" onclick="showSection('predicciones')">⚽ Partidos</button>
@@ -1947,9 +2274,9 @@
         <div class="bracket" id="bracket-container"></div>
       </div>
     </div>
-    <div id="elim-vista-llaves" style="display:none">
+    <div id="elim-vista-llaves" style="display:none;width:100%">
       <div class="llaves-wrapper">
-        <div id="llaves-container"></div>
+        <div id="llaves-container" style="width:100%"></div>
       </div>
     </div>
   </div>
@@ -3538,7 +3865,7 @@ function renderLlaves() {
   </div>`;
 
   container.innerHTML = `
-    <div style="background:var(--fondo2);border:1px solid var(--borde);border-radius:14px;overflow:hidden;padding:16px 8px 20px">
+    <div style="background:var(--fondo2);border:1px solid var(--borde);border-radius:14px;overflow:hidden;padding:16px 8px 20px;width:100%;box-sizing:border-box">
       <div style="font-family:'Bebas Neue',cursive;font-size:1rem;letter-spacing:2px;color:var(--amarillo);padding:0 8px 14px;border-bottom:1px solid var(--borde);margin-bottom:16px">
         🏆 CUADRO OFICIAL FIFA MUNDIAL 2026
         <span style="font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--texto2);font-weight:400;letter-spacing:0;margin-left:10px">Vista de solo lectura · 32 equipos</span>
