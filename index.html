@@ -3533,7 +3533,7 @@ function renderEliminatorias() {
     buildMatch(p.id, p.home, p.away, p.label, classified)
   );
 
-  // ── Cuartos de final: 8 partidos ──────────
+  // ── Octavos de final: 8 partidos ──────────
   // Agrupación: QF1=M1vsM2, QF2=M3vsM4, QF3=M5vsM6, QF4=M7vsM8
   //             QF5=M9vsM10, QF6=M11vsM12, QF7=M13vsM14, QF8=M15vsM16
   const QF_PAIRS = [[0,1],[2,3],[4,5],[6,7],[8,9],[10,11],[12,13],[14,15]];
@@ -3541,14 +3541,14 @@ function renderEliminatorias() {
     buildMatchFromWinners(`qf_${i}`, `QF${i+1}`, r16[a], r16[b])
   );
 
-  // ── Semifinales: 4 partidos ────────────────
+  // ── Cuartos de final: 4 partidos ────────────────
   // SF1=QF1vsQF2, SF2=QF3vsQF4, SF3=QF5vsQF6, SF4=QF7vsQF8
   const SF_PAIRS = [[0,1],[2,3],[4,5],[6,7]];
   const sf = SF_PAIRS.map(([a,b], i) =>
     buildMatchFromWinners(`sf_${i}`, `SF${i+1}`, qf[a], qf[b])
   );
 
-  // ── Finales ────────────────────────────────
+  // ── Semifinales ────────────────────────────────
   // Semifinal A: ganador SF1 vs SF2 → Gran Final
   const sfA = buildMatchFromWinners('final_sfa', 'Semif. A', sf[0], sf[1]);
   // Semifinal B: ganador SF3 vs SF4 → Gran Final
