@@ -4309,13 +4309,26 @@ function renderAdmin() {
     groups[m.grupo].push(m);
   });
 
+  // Para partidos de eliminatorias, resolver el nombre real del equipo
+  // (y su bandera) a partir del árbol de llaves, igual que en "Mis Predicciones".
+  // Solo afecta la visualización: no modifica MATCHES, IDs ni la lógica de avance.
+  const knockoutTeams = resolveKnockoutTeamsForPredictions();
+
   let html = '';
   Object.keys(groups).sort().forEach(g => {
     html += `<div class="group-title">Grupo ${g}</div>`;
     groups[g].forEach(m => {
       const result = state.results[m.id];
-      const hFlag = flagImg(m.home, 20, 14);
-      const aFlag = flagImg(m.away, 20, 14);
+
+      let homeName = m.home;
+      let awayName = m.away;
+      if (m.fase && knockoutTeams[m.id]) {
+        homeName = knockoutTeams[m.id].homeTeam || m.home;
+        awayName = knockoutTeams[m.id].awayTeam || m.away;
+      }
+
+      const hFlag = flagImg(homeName, 20, 14);
+      const aFlag = flagImg(awayName, 20, 14);
 
       html += `
       <div class="admin-card">
@@ -4323,10 +4336,10 @@ function renderAdmin() {
           <span class="match-num" style="flex-shrink:0">P.${m.id} · J${m.jornada}</span>
           <div class="admin-teams">
             ${hFlag}
-            <span>${m.home}</span>
+            <span>${homeName}</span>
             <span style="color:var(--texto2); margin:0 4px">vs</span>
             ${aFlag}
-            <span>${m.away}</span>
+            <span>${awayName}</span>
           </div>
           <div class="admin-score-inputs">
             <input type="number" class="score-box" id="res-${m.id}-h" value="${result ? result.home : ''}" min="0" max="20" placeholder="–" style="background:var(--fondo)">
